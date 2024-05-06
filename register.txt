@@ -1,0 +1,40 @@
+module mano_registers(
+    input clk,        
+    input reset,     
+    input [15:0] data_in,  
+    input load_ir,   
+    input load_pc,  
+    input load_ac,   
+    input load_dr,   
+    input load_tr,  
+    input load_ar,   
+    output reg [15:0] ir,  
+    output reg [15:0] pc,  
+    output reg [15:0] ac,  
+    output reg [15:0] dr,  
+    output reg [15:0] tr,  
+    output reg [15:0] ar   
+);
+
+
+always @(posedge clk or posedge reset) begin
+    if (reset) begin
+        
+        ir <= 16'h0000;
+        pc <= 16'h0000;
+        ac <= 16'h0000;
+        dr <= 16'h0000;
+        tr <= 16'h0000;
+        ar <= 16'h0000;
+    end else begin
+        
+        if (load_ir) ir <= data_in;
+        if (load_pc) pc <= data_in;
+        if (load_ac) ac <= data_in;
+        if (load_dr) dr <= data_in;
+        if (load_tr) tr <= data_in;
+        if (load_ar) ar <= data_in;
+    end
+end
+
+endmodule
