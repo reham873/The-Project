@@ -1,0 +1,102 @@
+`timescale 1ns / 1ps
+
+
+module CommonBus (
+    input wire clk,          
+    input wire rst,         
+    inout wire [15:0] data,   
+    inout wire [15:0] addr,   
+    inout wire write_enable        
+);
+
+reg [15:0] memory [0:65536];  
+
+
+reg [15:0] cpu_data_out;    
+reg [15:0] cpu_data_in;      
+reg [15:0] cpu_addr;         
+reg cpu_write_enable;             
+reg cpu_access;             
+reg cpu_done;               
+
+
+reg [15:0] io_data_out;      
+reg [15:0] io_data_in;       
+reg [15:0] io_addr;          
+reg io_write_enable;              
+reg io_access;              
+reg io_done;               
+
+
+reg [15:0] mem_data_out;     
+reg [15:0] mem_data_in;      
+reg [15:0] mem_addr;         
+reg mem_write_enable;             
+reg mem_access;             
+reg mem_done;              
+
+
+reg cpu_active;             
+reg io_active;             
+reg mem_active;         
+
+
+reg [1:0] bus_priority;     
+
+
+assign data = (cpu_access) ? cpu_data_out :
+              (io_access) ? io_data_out :
+              (mem_access) ? mem_data_out :
+              16'bZZ;  
+
+
+assign addr = (cpu_access) ? cpu_addr :
+              (io_access) ? io_addr :
+              (mem_access) ? mem_addr :
+              16'bZZ;  
+
+
+assign write_enable = (cpu_access) ? cpu_write_enable :
+               (io_access) ? io_write_enable :
+               (mem_access) ? mem_write_enable :
+               1'bz;   
+
+always @(posedge clk) begin
+    if (rst) begin
+        cpu_active <= 1'b0;
+        cpu_done <= 1'b0;
+    end
+    else if (!cpu_active && !io_active && !mem_active) begin
+        cpu_access <= 1'b1;
+        cpu_active <= 1'b1;
+    end
+    else if (cpu_active && !cpu_done) begin
+        cpu_data_out <= mem_data_in;
+        cpu_done <= 1'b1;
+    end
+    else if (cpu_done && !io_active && !mem_active) begin
+        cpu_access <= 1'b0;
+        cpu_active <= 1'b0;
+        cpu_done <= 1'b0;
+    end
+end
+
+endmodule
+
+
+module CommonBus_tb;
+
+reg clk = 0;          
+reg rst = 1;        
+
+
+CommonBus dut (   
+    .clk(clk),
+    .rst(rst),
+    .data(),
+    .addr(),
+    .write_enable()
+);
+
+
+endmodule
