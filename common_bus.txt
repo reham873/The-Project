@@ -41,21 +41,21 @@ reg io_active;
 reg mem_active;         
 
 
-reg [1:0] bus_priority;     // Priority encoder for bus access
+reg [1:0] bus_priority;     
 
-// Bus data flow control
+
 assign data = (cpu_access) ? cpu_data_out :
               (io_access) ? io_data_out :
               (mem_access) ? mem_data_out :
               16'bZZ;  
 
-// Bus address flow control
+
 assign addr = (cpu_access) ? cpu_addr :
               (io_access) ? io_addr :
               (mem_access) ? mem_addr :
               16'bZZ;  
 
-// Bus write enable control
+
 assign write_enable = (cpu_access) ? cpu_write_enable :
                (io_access) ? io_write_enable :
                (mem_access) ? mem_write_enable :
@@ -90,7 +90,7 @@ reg clk = 0;
 reg rst = 1;        
 
 
-CommonBus dut (    //design under test
+CommonBus dut (   
     .clk(clk),
     .rst(rst),
     .data(),
