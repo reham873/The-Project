@@ -31,7 +31,7 @@ module alu_tb;
     reg opcode;
     wire result;
 
-    alu dut (      //design under test
+    alu dut (      
         .op1(op1),
         .op2(op2),
         .opcode(opcode),
