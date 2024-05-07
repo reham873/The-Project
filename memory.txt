@@ -13,7 +13,7 @@ module memory (
 
     reg [15:0] mem [0:65535];
 
-    // Read and write operations
+  
     always @(posedge clk) begin
         if (rst) begin
             for (i = 0; i < 65536; i = i + 1)
@@ -38,7 +38,7 @@ module memory_tb;
     reg write_enable; 
     wire data_out;
 
-    memory dut (   //design under test
+    memory dut (   
 
         .clk(clk),
         .rst(rst),
