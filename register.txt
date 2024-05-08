@@ -23,11 +23,11 @@ always @(posedge clk or posedge reset) begin
     if (reset) begin
         
         ir <= 16'h0000;
-        pc <= 11'h000;
+        pc <= 12'h000;
         ac <= 16'h0000;
         dr <= 16'h0000;
         tr <= 16'h0000;
-        ar <= 11'h000;
+        ar <= 12'h000;
     end else begin
         
         if (load_ir) ir <= data_in;
